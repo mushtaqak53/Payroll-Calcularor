@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Payroll Calculator</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <main>
+        <div id="controls-panel">
+            <header>
+                <h1>Payroll Calculator</h1>
+                <p>Add employees and their monthly salary to calculate monthly payroll and get AI-powered insights.</p>
+            </header>
+            
+            <form id="add-employee-form">
+                <h2>Add Employee</h2>
+                <div class="form-group">
+                    <label for="employee-name">Employee Name</label>
+                    <input type="text" id="employee-name" placeholder="e.g., Jane Doe" required>
+                </div>
+                 <div class="form-group">
+                    <label for="father-name">Father Name</label>
+                    <input type="text" id="father-name" placeholder="e.g., John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="cell-no">Cell No</label>
+                    <input type="tel" id="cell-no" placeholder="e.g., 0300-1234567" required>
+                </div>
+                <div class="form-group">
+                    <label for="cnic-no">CNIC No</label>
+                    <input type="text" id="cnic-no" placeholder="e.g., 12345-1234567-1" required>
+                </div>
+                <div class="form-group">
+                    <label for="date-of-appointment">Date of Appointment</label>
+                    <input type="date" id="date-of-appointment" required>
+                </div>
+                <div class="form-group">
+                    <label for="designation">Designation</label>
+                    <input type="text" id="designation" placeholder="e.g., Software Engineer" required>
+                </div>
+                 <div class="form-group">
+                    <label>GPF Applied</label>
+                    <div class="radio-group">
+                        <label for="gpf-yes"><input type="radio" id="gpf-yes" name="gpf" value="true" checked> Yes</label>
+                        <label for="gpf-no"><input type="radio" id="gpf-no" name="gpf" value="false"> No</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="monthly-salary">Monthly Salary (Rs.)</label>
+                    <input type="number" id="monthly-salary" placeholder="e.g., 5000" required min="1">
+                </div>
+
+                <div class="form-section">
+                    <h3>Allowances (Monthly, Optional)</h3>
+                    <div class="form-group">
+                        <label for="travel-allowance">Travel Allowance (Rs.)</label>
+                        <input type="number" id="travel-allowance" placeholder="e.g., 100" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="medical-allowance">Medical Allowance (Rs.)</label>
+                        <input type="number" id="medical-allowance" placeholder="e.g., 150" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="adhoc-allowance">Adhoc Allowance (Rs.)</label>
+                        <input type="number" id="adhoc-allowance" placeholder="e.g., 50" min="0">
+                    </div>
+                </div>
+            
+                <div class="form-section">
+                    <h3>Deductions (Monthly, Optional)</h3>
+                    <div class="form-group">
+                        <label for="late-arrivals">Late Arrivals (Rs.)</label>
+                        <input type="number" id="late-arrivals" placeholder="e.g., 20" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="leaves">Leaves (Rs.)</label>
+                        <input type="number" id="leaves" placeholder="e.g., 100" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="security">Security (Rs.)</label>
+                        <input type="number" id="security" placeholder="e.g., 50" min="0">
+                    </div>
+                </div>
+
+                <button type="submit" class="primary">Add Employee</button>
+            </form>
+
+            <div id="employee-list-container">
+                <h2>Employee List</h2>
+                <input type="search" id="search-employee" placeholder="Search by name..." style="display: none;">
+                <ul id="employee-list">
+                    <li class="placeholder">No employees added yet.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="results-panel">
+            <div id="results-actions">
+                 <button id="calculate-payroll-btn" class="primary" disabled>Calculate Payroll</button>
+                 <button id="generate-summary-btn" class="secondary" style="display: none;">Generate Financial Summary</button>
+                 <button id="preview-all-btn" class="secondary" style="display: none;">Preview All Slips</button>
+                 <button id="download-all-btn" class="secondary" style="display: none;">Download All Slips</button>
+            </div>
+           
+            <div id="payroll-table-container">
+                <!-- Payroll table will be generated here -->
+            </div>
+
+            <div id="summary-container" style="display: none;">
+                <h2>Financial Summary</h2>
+                <div id="summary-output">
+                    <!-- AI summary will be generated here -->
+                </div>
+                 <div class="loader" id="loader" style="display: none;"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Edit Employee Modal -->
+    <div id="edit-modal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Edit Employee</h2>
+            </div>
+            <form id="edit-employee-form">
+                <div class="modal-body">
+                     <div class="form-group">
+                        <label for="edit-employee-name">Employee Name</label>
+                        <input type="text" id="edit-employee-name" required>
+                    </div>
+                     <div class="form-group">
+                        <label for="edit-father-name">Father Name</label>
+                        <input type="text" id="edit-father-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-cell-no">Cell No</label>
+                        <input type="tel" id="edit-cell-no" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-cnic-no">CNIC No</label>
+                        <input type="text" id="edit-cnic-no" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-date-of-appointment">Date of Appointment</label>
+                        <input type="date" id="edit-date-of-appointment" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-designation">Designation</label>
+                        <input type="text" id="edit-designation" required>
+                    </div>
+                     <div class="form-group">
+                        <label>GPF Applied</label>
+                        <div class="radio-group">
+                            <label for="edit-gpf-yes"><input type="radio" id="edit-gpf-yes" name="edit-gpf" value="true"> Yes</label>
+                            <label for="edit-gpf-no"><input type="radio" id="edit-gpf-no" name="edit-gpf" value="false"> No</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-monthly-salary">Monthly Salary (Rs.)</label>
+                        <input type="number" id="edit-monthly-salary" required min="1">
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Allowances</h3>
+                        <div class="form-group">
+                            <label for="edit-travel-allowance">Travel Allowance (Rs.)</label>
+                            <input type="number" id="edit-travel-allowance" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-medical-allowance">Medical Allowance (Rs.)</label>
+                            <input type="number" id="edit-medical-allowance" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-adhoc-allowance">Adhoc Allowance (Rs.)</label>
+                            <input type="number" id="edit-adhoc-allowance" min="0">
+                        </div>
+                    </div>
+                
+                    <div class="form-section">
+                        <h3>Deductions</h3>
+                        <div class="form-group">
+                            <label for="edit-late-arrivals">Late Arrivals (Rs.)</label>
+                            <input type="number" id="edit-late-arrivals" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-leaves">Leaves (Rs.)</label>
+                            <input type="number" id="edit-leaves" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-security">Security (Rs.)</label>
+                            <input type="number" id="edit-security" min="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cancel-edit-btn" class="secondary">Cancel</button>
+                    <button type="submit" class="primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script type="importmap">
+    {
+        "imports": {
+            "@google/genai": "https://esm.sh/@google/genai@^0.12.0",
+            "jspdf": "https://esm.sh/jspdf@^2.5.1",
+            "jspdf-autotable": "https://esm.sh/jspdf-autotable@^3.8.2"
+        }
+    }
+    </script>
+    <script type="module" src="index.tsx"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+{
+  "name": "Copy of Salary Payroll Calculator",
+  "description": "An application to calculate employee payroll and generate financial summaries using the Gemini API.",
+  "requestFramePermissions": []
+}
